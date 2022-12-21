@@ -12,7 +12,7 @@ from sqlalchemy.orm import sessionmaker
 
 import time
 
-bot = Bot(token='5640911378:AAE6ffUY7leVVcnAdciZsFzjJP9JC6RiBfU')
+bot = Bot(token='________:__________')
 dp = Dispatcher(bot, storage=MemoryStorage())
 
 engine = db.create_engine('sqlite+pysqlite:///database.db', echo=True)
@@ -227,7 +227,7 @@ async def magic_attack(message, state):
 
 
 @dp.message_handler(state=Person.Armour)
-async def fill_armour(message, state):
+async def armour(message, state):
     async with state.proxy() as data:
         data['Armour'] = message.text
     await message.answer('Введите уровень магической брони персонажа. (от 10 до 100)')
@@ -508,7 +508,7 @@ async def take_on_or_off(message, state):
 
 
 @dp.message_handler(lambda message: message.text == "Посмотреть товары", state="*")
-async def get_items(message):
+async def look_at(message):
     results = session.query(Items).all()
     text = 'Товары:\n'
     for r in results:
@@ -518,7 +518,7 @@ async def get_items(message):
 
 
 @dp.message_handler(lambda message: message.text == "Продать товары", state="*")
-async def get_items(message):
+async def get(message):
     await Actions.Sell.set()
     await message.answer("Введите ItemID товара, чтобы продать его.")
 
@@ -530,7 +530,7 @@ NowWearing = Column(Integer)
 
 
 @dp.message_handler(state=Actions.Sell)
-async def sell_items(message, state):
+async def sell(message, state):
     sell_item_id = str(message.text)
     user_id = message.from_user.id
     items = session.query(ItemsByPerson).filter_by(ItemID=sell_item_id).filter_by(UserID=user_id)
@@ -564,13 +564,13 @@ async def sell_items(message, state):
 
 
 @dp.message_handler(lambda message: message.text == "Купить товары", state="*")
-async def get_items(message):
+async def get(message):
     await Actions.Buy.set()
-    await message.answer("Введите ItemId товара, который вы хотите купить. ItemID всех товаров можно посмотреть в магазине.")
+    await message.answer("Введите ItemId товара, чтобы купить его. ItemID всех товаров можно посмотреть в магазине.")
 
 
 @dp.message_handler(state=Actions.Buy)
-async def buy_item(message, state):
+async def buy(message, state):
     buy_item_id = int(message.text)
     user_id = message.from_user.id
 
