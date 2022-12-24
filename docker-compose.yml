@@ -1,0 +1,9 @@
+version: "3"
+
+services:
+  bot:
+    build: bot/
+    command: ./start.sh
+
+  server:
+    build: server/
