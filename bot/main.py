@@ -12,7 +12,7 @@ from sqlalchemy.orm import sessionmaker
 
 import time
 
-bot = Bot(token='________:__________')
+bot = Bot(token='_______:_____________')
 dp = Dispatcher(bot, storage=MemoryStorage())
 
 engine = db.create_engine('sqlite+pysqlite:///database.db', echo=True)
